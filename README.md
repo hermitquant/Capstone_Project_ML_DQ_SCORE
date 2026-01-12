@@ -125,7 +125,6 @@ Capstone_Project_ML_DQ_SCORE/
 │   │   ├── schema.py                            # Schema test parsing
 │   │   ├── person.py                            # Person test parsing
 │   │   └── utils.py                             # Parsing utilities
-│   └── [additional modules...]                   # Other supporting modules
 ├── models/
 │   ├── dq_score_next_forecaster_*.pkl           # Trained forecasting models
 │   └── dq_score_multi_model_pipeline.pkl         # Multi-model pipeline artifacts

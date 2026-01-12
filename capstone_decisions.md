@@ -23,36 +23,30 @@
 
 **DQ_SCORE Formula:**
 ```
-DQ_SCORE = Base_Score - (Test_Failures × Severity_Weight) + Trust_Adjustments
+DQ_SCORE = (Number of Passed Tests / Total Number of Tests) per measurement period
 ```
 
 **Components:**
-- **Base Score**: 100 (perfect data quality)
-- **Test Failures**: Number of failed tests per measurement period
-- **Severity Weight**: 
-  - HIGH SEVERITY: -10 points per failure
-  - MEDIUM SEVERITY: -5 points per failure
-  - LOW SEVERITY: -2 points per failure
-- **Trust Adjustments**: 
-  - Historical performance trends (+/- 5 points)
-  - System reliability factors (+/- 3 points)
-  - Data source consistency (+/- 2 points)
+- **Passed Tests**: Count of tests with STATUS = 'PASS' in a measurement period
+- **Total Tests**: Count of all tests executed in the same measurement period
+- **Score Range**: 0.0 to 1.0 (where 1.0 = perfect quality, 0.0 = complete failure)
 
 **Calculation Example:**
 ```
-Base Score: 100
-Failed Tests: 3 (2 HIGH, 1 MEDIUM)
-Penalty: (2 × 10) + (1 × 5) = 25
-Trust Adjustment: +3 (good historical performance)
-Final DQ_SCORE: 100 - 25 + 3 = 78
+Measurement Period: 2024-01-15
+Total Tests Executed: 25
+Passed Tests: 22
+Failed Tests: 3
+
+DQ_SCORE = 22 / 25 = 0.88
 ```
 
 **DQ_SCORE Interpretation:**
-- **90-100**: Excellent data quality (minimal issues)
-- **80-89**: Good data quality (minor issues, well-controlled)
-- **70-79**: Acceptable data quality (some issues requiring attention)
-- **60-69**: Poor data quality (significant issues need action)
-- **Below 60**: Critical data quality (urgent intervention required)
+- **0.90-1.00**: Excellent data quality (90-100% pass rate)
+- **0.80-0.89**: Good data quality (80-89% pass rate)
+- **0.70-0.79**: Acceptable data quality (70-79% pass rate)
+- **0.60-0.69**: Poor data quality (60-69% pass rate)
+- **Below 0.60**: Critical data quality (less than 60% pass rate)
 
 **Business Meaning:**
 - **Higher scores** indicate reliable, trustworthy data for downstream systems
@@ -60,11 +54,12 @@ Final DQ_SCORE: 100 - 25 + 3 = 78
 - **Score trends** show data quality improvement or degradation over time
 - **Score volatility** indicates system stability or underlying issues
 
-**Why Heuristic Approach:**
-- **Domain Expertise**: Incorporates healthcare data quality priorities
-- **Interpretability**: Stakeholders can understand score components
-- **Actionability**: Clear relationship between failures and scores
-- **Flexibility**: Adaptable to different healthcare contexts and requirements
+**Why Simple Pass Rate Approach:**
+- **Simplicity**: Easy to calculate and understand across all stakeholders
+- **Standardization**: Consistent metric that can be compared across systems and time periods
+- **Transparency**: Clear relationship between test execution and quality score
+- **Actionability**: Directly tied to test improvement initiatives
+- **Normalization**: 0-1 scale allows for easy aggregation and comparison
 
 ### 2. Forecasting Target: Next Measurement DQ_SCORE
 **Decision:** Frame the task as “forecast the next measurement’s DQ_SCORE” rather than predicting the same-day score.

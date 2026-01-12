@@ -185,6 +185,20 @@ DQ_SCORE = 22 / 25 = 0.88
 - **Feature Selection**: Complete regularization - 239 zero coefficients, 0 positive coefficients
 - **Approach**: Temporal patterns dominate over engineered features
 
+### Naive Baseline Model
+**Decision:** Include Naive(last_value) as a fundamental baseline for all model comparisons.
+
+**Naive Model Definition:**
+- **Mathematical Formula**: ŷ_{t+1} = y_t (next prediction equals last observed value)
+- **Implementation**: For each test date, prediction is the most recent previous DQ_SCORE measurement
+- **Characteristics**: No training required, handles irregular time gaps naturally
+- **Purpose**: Serves as minimum performance bar; ML models must meaningfully outperform to justify complexity
+
+**Baseline Usage:**
+- **Performance Benchmark**: Current RMSE 0.397030 provides reference for ML model evaluation
+- **Simplicity Advantage**: Transparent, always available, and easy to explain to stakeholders
+- **Overfitting Protection**: Prevents deployment of ML models that don't add value over simple forecasting
+
 **Post-Run Mode (Rich Feature Set):**
 - **Selected Model**: ElasticNet (linear model with L1/L2 regularization)
 - **Feature Availability**: Complete daily aggregates (violations, failures, execution results)

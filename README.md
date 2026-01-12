@@ -274,7 +274,6 @@ streamlit run src/streamlit_app.py
 - **Feature Importance**: Visualize top predictive features and their impact on DQ_SCORE
 - **Historical Trends**: Interactive charts showing DQ_SCORE evolution over time
 - **Model Comparison**: Compare performance between different forecasting modes (post-run vs pre-run)
-- **Healthcare-Specific Insights**: Domain-specific feature interpretation and business impact analysis
 
 ### Accessing the Dashboard
 After running the command above, the Streamlit app will be available at:

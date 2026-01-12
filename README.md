@@ -175,7 +175,8 @@ The `Capstone_notebook.ipynb` contains the complete end-to-end workflow:
 - Import necessary libraries (pandas, numpy, matplotlib, seaborn, scikit-learn)
 - Configure project paths and system settings
 
-### Step 2: Data Processing Pipeline
+### Step 2: Exploratory Data Analysis & Data Processing Pipeline
+- **Perform EDA on initial dataset `pseudo_deident.csv`**: Analyze data quality issues, understand data distribution, and identify missing values through visualization
 - **Build `events.csv` from `pseudo_deident.csv`**: Transform raw test events into enhanced dataset with DQ_EVENT JSON structures
 - **Generate engineered datasets**: Create both standard and irregular time series feature sets
 - **Run preprocessing pipeline**: Execute complete feature engineering with validation

@@ -256,5 +256,8 @@ The `Capstone_notebook.ipynb` contains the complete end-to-end workflow:
 ## Contributing
 This project represents a comprehensive approach to healthcare data quality management using machine learning. The modular architecture allows for easy extension and customization based on specific organizational needs.
 
+## Capstone Design Decisions
+For detailed technical decisions, architectural choices, and the rationale behind each design element, please refer to the comprehensive [Capstone Design Decisions](capstone_decisions.md) document.
+
 ## License
 This project is part of a capstone demonstration and is provided for educational and research purposes.

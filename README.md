@@ -268,7 +268,17 @@ cd Capstone_Project_ML_DQ_SCORE
 streamlit run src/streamlit_app.py
 ```
 
-### Dashboard Features
+### Dashboard Preview
+![Streamlit Dashboard](images/streamlit_app_1.jpeg)
+![Feature Analysis](images/streamlit_app_2.jpeg)
+![Historical Trends](images/streamlit_app_3.jpeg)
+
+The interactive web application provides real-time healthcare data quality forecasting with:
+- **Date selection** for DQ_SCORE prediction
+- **Feature importance visualization** with healthcare context
+- **Historical trend analysis** and model performance metrics
+
+**View all dashboard screenshots**: [images/](images/) directory contains additional screenshots of the Streamlit application in action.
 - **Real-time Forecasting**: Interactive DQ_SCORE prediction with date selection
 - **Model Performance**: Display accuracy metrics and confidence intervals
 - **Feature Importance**: Visualize top predictive features and their impact on DQ_SCORE

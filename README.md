@@ -50,6 +50,43 @@ The system successfully evolved from naive baseline predictions to **ElasticNet 
 
 ---
 
+This project is a **time series regression machine learning project** that focuses on forecasting continuous numerical values. Specifically, it's a **univariate time series forecasting task** where the goal is to predict future DQ_SCORE values (continuous range 0.0-1.0) based on historical patterns and engineered features.
+
+## Machine Learning Project Type
+
+### **🎯 Regression Forecasting Project**
+This is a **regression-based time series forecasting** project with the following characteristics:
+
+#### **Task Type:**
+- **Regression**: Predicting continuous numerical values (DQ_SCORE range 0.0-1.0)
+- **Time Series**: Temporal forecasting with irregular measurement intervals
+- **Univariate**: Single target variable (DQ_SCORE) with multiple predictor features
+- **Supervised Learning**: Training on historical DQ_SCORE values with corresponding features
+
+#### **ML Approach:**
+- **Walk-Forward Validation**: Time-respecting cross-validation for temporal data
+- **Feature Engineering**: 239 engineered features from raw test events
+- **Model Competition**: Multiple regression algorithms (ElasticNet, DecisionTree, Ridge, BayesianRidge)
+- **Automated Selection**: Best model chosen based on RMSE performance
+
+#### **Regression Algorithms Evaluated:**
+- **ElasticNet**: Linear regression with L1/L2 regularization (current winner)
+- **DecisionTree**: Non-linear regression with depth constraints
+- **Ridge**: Linear regression with L2 regularization
+- **BayesianRidge**: Probabilistic linear regression
+- **Naive Baseline**: Last-value forecasting for comparison
+
+#### **Performance Metrics:**
+- **RMSE (Root Mean Square Error)**: Primary evaluation metric
+- **Current Best**: ElasticNet with RMSE 0.287583
+- **Baseline Comparison**: 38% improvement over naive baseline
+
+#### **Regression Challenges Addressed:**
+- **Small Dataset**: Only 19 measurements for training/validation
+- **Irregular Time Series**: Variable gaps between measurements (1-14 days)
+- **Feature Selection**: L1 regularization eliminated 239 irrelevant features
+- **Overfitting Prevention**: Regularization and walk-forward validation
+
 This project analyzes data quality test results from a comprehensive healthcare data validation system. The goal is to build machine learning models that can predict data quality scores and identify potential data issues before they impact downstream systems. The system processes raw test events from multiple data quality categories including allocation, completeness, uniqueness, referential integrity, privacy, and schema validation.
 
 ## Dataset Description

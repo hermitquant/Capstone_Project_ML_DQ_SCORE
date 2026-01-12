@@ -256,6 +256,37 @@ The `Capstone_notebook.ipynb` contains the complete end-to-end workflow:
 ## Contributing
 This project represents a comprehensive approach to healthcare data quality management using machine learning. The modular architecture allows for easy extension and customization based on specific organizational needs.
 
+## Interactive Dashboard
+Launch the Streamlit web application for real-time forecasting and interactive data exploration:
+
+### Running the Streamlit App
+```bash
+# Navigate to project root
+cd Capstone_Project_ML_DQ_SCORE
+
+# Run the Streamlit application
+streamlit run src/streamlit_app.py
+```
+
+### Dashboard Features
+- **Real-time Forecasting**: Interactive DQ_SCORE prediction with date selection
+- **Model Performance**: Display accuracy metrics and confidence intervals
+- **Feature Importance**: Visualize top predictive features and their impact on DQ_SCORE
+- **Historical Trends**: Interactive charts showing DQ_SCORE evolution over time
+- **Model Comparison**: Compare performance between different forecasting modes (post-run vs pre-run)
+- **Healthcare-Specific Insights**: Domain-specific feature interpretation and business impact analysis
+
+### Accessing the Dashboard
+After running the command above, the Streamlit app will be available at:
+- **Local URL**: `http://localhost:8501`
+- **Network URL**: `http://your-machine-ip:8501` (for network access)
+
+### Dashboard Navigation
+- **Forecast Tab**: Select dates and view DQ_SCORE predictions
+- **Analysis Tab**: Explore feature importance and model performance
+- **Data Tab**: View raw and processed data quality metrics
+- **Settings Tab**: Configure forecasting parameters and model options
+
 ## Capstone Design Decisions
 For detailed technical decisions, architectural choices, and the rationale behind each design element, please refer to the comprehensive [Capstone Design Decisions](capstone_decisions.md) document.
 

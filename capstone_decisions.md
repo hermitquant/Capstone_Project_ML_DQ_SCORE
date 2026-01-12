@@ -102,13 +102,11 @@ DQ_SCORE = 22 / 25 = 0.88
 - **Test Category Analysis**: Analyze test distribution across allocation, completeness, uniqueness, referential integrity, privacy, and schema categories
 - **Source/Target Analysis**: Examine database, schema, and table patterns in test execution
 
-**Visualization Techniques Used in Capstone_notebook.ipynb:**
+**Visualization Techniques And Statistical Summary Metrics Used in Capstone_notebook.ipynb:**
 - **Seaborn style settings**: `plt.style.use('seaborn-v0_8')` and `sns.set_palette("husl")`
 - **Matplotlib configuration**: Basic plotting setup for data visualization
 - **Statistical plots**: Configured for displaying data distributions and patterns
 - **Custom display settings**: Pandas display options for better data visualization
-
-**Statistical Summary Metrics Used in 01_Exploratory_Data_Analysis.ipynb:**
 - **Missing Values Analysis**: `missing_values = df.isnull().sum()` and `missing_percentage = (missing_values / len(df)) * 100`
 - **Test Result Statistics**: `df['TEST_RESULT'].describe()` showing mean, median, max issues per test
 - **Pass/Fail Analysis**: `df['STATUS'].value_counts()` for pass/fail distribution

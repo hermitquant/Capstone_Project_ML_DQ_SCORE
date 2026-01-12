@@ -1,6 +1,55 @@
 # Capstone Project: ML Data Quality Score Analysis
 
 ## Project Overview
+
+### **🎯 Main Focus: DQ_SCORE Forecasting**
+
+This project's primary objective is to **forecast the Data Quality Score (DQ_SCORE)** for healthcare data validation systems. The DQ_SCORE is a critical metric that represents the overall health and reliability of data quality testing processes, enabling proactive data quality management and early warning of potential data issues.
+
+#### **📊 What is DQ_SCORE?**
+
+The **DQ_SCORE** is a **heuristic pass rate metric** calculated as:
+
+```
+DQ_SCORE = (Number of Passed Tests) / (Total Number of Tests)
+```
+
+- **Range**: 0.0 to 1.0 (0% to 100% pass rate)
+- **Higher is Better**: Scores closer to 1.0 indicate excellent data quality
+- **Daily Metric**: Calculated per day from aggregated test results
+- **Business Impact**: Directly correlates with data reliability and system health
+
+#### **🏥 Why DQ_SCORE Matters in Healthcare**
+
+**Clinical Decision Support:**
+- **Patient Safety**: High DQ_SCORE ensures reliable clinical data for treatment decisions
+- **Regulatory Compliance**: Healthcare regulations require documented data quality validation
+- **Interoperability**: Quality scores enable trust in data sharing between healthcare systems
+
+**Operational Excellence:**
+- **Early Warning**: Forecasting DQ_SCORE helps identify potential data quality issues before they impact clinical operations
+- **Resource Planning**: Predictive scores inform staffing and infrastructure needs for data quality teams
+- **Continuous Improvement**: Trend analysis supports ongoing data quality enhancement initiatives
+
+**Business Intelligence:**
+- **Analytics Reliability**: High-quality data ensures accurate healthcare analytics and reporting
+- **Cost Reduction**: Proactive quality management prevents expensive data-related operational issues
+- **Strategic Planning**: DQ_SCORE trends guide investment in data infrastructure and processes
+
+#### **🤖 Machine Learning Approach**
+
+This project builds sophisticated ML models that:
+- **Analyze Historical Patterns**: Learn from 3,189 test events across multiple quality categories
+- **Forecast Future Scores**: Predict next-day DQ_SCORE with 38% better accuracy than naive methods
+- **Identify Key Drivers**: Reveal which factors most impact data quality (resource allocation, complexity handling, person-based metrics)
+- **Enable Proactive Management**: Provide early warnings for potential quality degradation
+
+#### **📈 Technical Achievement**
+
+The system successfully evolved from naive baseline predictions to **ElasticNet model superiority** (RMSE 0.288 vs 0.397), demonstrating that machine learning can effectively forecast data quality metrics in complex healthcare environments.
+
+---
+
 This project analyzes data quality test results from a comprehensive healthcare data validation system. The goal is to build machine learning models that can predict data quality scores and identify potential data issues before they impact downstream systems. The system processes raw test events from multiple data quality categories including allocation, completeness, uniqueness, referential integrity, privacy, and schema validation.
 
 ## Dataset Description

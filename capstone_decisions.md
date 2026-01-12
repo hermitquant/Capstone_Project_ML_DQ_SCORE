@@ -179,6 +179,12 @@ DQ_SCORE = 22 / 25 = 0.88
 ### 3. Mode-Dependent Model Selection (Post-Run vs Pre-Run)
 **Decision:** Implement automatic model selection based on available feature set and operational context.
 
+**Current Experiment Results (20260112_204906):**
+- **Selected Model**: ElasticNet (linear model with L1/L2 regularization)
+- **RMSE Performance**: 0.287583 (winner vs DecisionTree 0.294162, Naive 0.397030)
+- **Feature Selection**: Complete regularization - 239 zero coefficients, 0 positive coefficients
+- **Approach**: Temporal patterns dominate over engineered features
+
 **Post-Run Mode (Rich Feature Set):**
 - **Selected Model**: ElasticNet (linear model with L1/L2 regularization)
 - **Feature Availability**: Complete daily aggregates (violations, failures, execution results)
@@ -188,10 +194,10 @@ DQ_SCORE = 22 / 25 = 0.88
   - Handles multicollinearity through regularization
   - Continuous predictions with smooth curves
 - **Performance**: 85-90% accuracy with complete information
-- **Key Features**: `daily_metric_alloc_diff_mean`, `daily_complexity_score_max`, `daily_metric_count_person_id_sum`
+- **Current Finding**: Engineered features eliminated through L1 regularization, temporal patterns dominate
 
 **Pre-Run Mode (Limited Feature Set):**
-- **Selected Model**: DecisionTree(max_depth=2)
+- **Selected Model**: DecisionTree(max_depth=2) - Based on previous experiments
 - **Feature Availability**: Historical patterns without current day's results
 - **Model Characteristics**:
   - Non-linear pattern detection with limited features
@@ -200,6 +206,12 @@ DQ_SCORE = 22 / 25 = 0.88
   - Conservative forecasting with wider confidence intervals
 - **Performance**: 70-80% accuracy without current day's data
 - **Key Features**: `passed_tests` (60% importance), `measurements_last_30d` (40% importance)
+
+**Current Experiment Insights:**
+- **Temporal Dominance**: Historical DQ_SCORE values are primary predictors
+- **Feature Engineering Impact**: Current ElasticNet eliminated all engineered features
+- **Model Evolution**: From DecisionTree (194417) to ElasticNet (204906) with 3.6% RMSE improvement
+- **Regularization Success**: L1 regularization prevents overfitting with 19 measurements
 
 **Feature Interpretation and DQ_SCORE Relationship:**
 

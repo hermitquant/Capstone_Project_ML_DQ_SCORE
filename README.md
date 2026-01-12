@@ -270,8 +270,6 @@ streamlit run src/streamlit_app.py
 
 ### Dashboard Preview
 ![Streamlit Dashboard](images/streamlit_app_1.jpeg)
-![Feature Analysis](images/streamlit_app_2.jpeg)
-![Historical Trends](images/streamlit_app_3.jpeg)
 
 The interactive web application provides real-time healthcare data quality forecasting with:
 - **Date selection** for DQ_SCORE prediction

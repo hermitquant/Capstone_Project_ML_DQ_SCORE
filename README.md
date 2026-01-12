@@ -297,5 +297,13 @@ After running the command above, the Streamlit app will be available at:
 ## Capstone Design Decisions
 For detailed technical decisions, architectural choices, and the rationale behind each design element, please refer to the comprehensive [Capstone Design Decisions](capstone_decisions.md) document.
 
+## Model Analysis and Results
+For in-depth analysis of model performance, feature importance, and strategic insights from the healthcare data quality forecasting system, please see the comprehensive [Model Analysis](analysis.md) document containing:
+- **Model Performance Results**: Detailed RMSE comparisons and model selection rationale
+- **Feature Interpretation**: Analysis of key features impacting DQ_SCORE predictions
+- **Healthcare Context**: Domain-specific insights and business implications
+- **Strategic Recommendations**: Actionable insights for data quality improvement
+- **Technical Implementation**: Details of the Capstone notebook workflow and pipeline components
+
 ## License
 This project is part of a capstone demonstration and is provided for educational and research purposes.

@@ -191,11 +191,12 @@ The `Capstone_notebook.ipynb` contains the complete end-to-end workflow:
 - **Next measurement prediction**: Forecast DQ_SCORE for upcoming time periods
 - **Feature importance analysis**: Identify key drivers of data quality scores
 - **Model interpretation**: Understand coefficient importance and decision tree logic
+- **Feature importance visualization**: Create visualizations showing which features are most likely to improve forecasted DQ_SCORE
 
 ### Step 5: Visualization and Reporting
 - **Interactive dashboard**: Launch Streamlit app for real-time forecasting
 - **Performance metrics**: Display model accuracy and confidence intervals
-- **Feature importance charts**: Visualize top predictive features
+- **Feature importance charts**: Visualize top predictive features and their impact on DQ_SCORE improvement
 
 ## Key Features and Capabilities
 

@@ -78,7 +78,45 @@ DQ_SCORE = 22 / 25 = 0.88
 
 ## Data Handling & Preprocessing
 
-### 2. Use Irregular Time Series Dataset
+### 1. Exploratory Data Analysis (EDA) on Initial Dataset
+**Decision:** Perform comprehensive EDA on `pseudo_deident.csv` before any data transformation or feature engineering.
+
+**EDA Objectives:**
+- **Data Distribution Analysis**: Understand the distribution of test results, severity levels, and temporal patterns
+- **Daily Test Volume**: Analyze the number of tests executed per day to identify patterns and anomalies
+- **Test Status Breakdown**: Examine the distribution of PASS vs FAIL outcomes across different test categories
+- **Statistical Profile**: Generate descriptive statistics for numerical and categorical variables
+
+**Specific EDA Activities:**
+- **Temporal Analysis**: Plot test execution frequency over time to identify measurement patterns and gaps
+- **Status Distribution**: Create bar charts and pie charts showing PASS/FAIL ratios by test type
+- **Severity Analysis**: Examine the relationship between severity levels and test outcomes
+- **Missing Value Assessment**: Identify and quantify missing data patterns across all columns
+- **Test Category Analysis**: Analyze test distribution across allocation, completeness, uniqueness, referential integrity, privacy, and schema categories
+- **Source/Target Analysis**: Examine database, schema, and table patterns in test execution
+
+**Visualization Techniques Used in Capstone_notebook.ipynb:**
+- **Seaborn style settings**: `plt.style.use('seaborn-v0_8')` and `sns.set_palette("husl")`
+- **Matplotlib configuration**: Basic plotting setup for data visualization
+- **Statistical plots**: Configured for displaying data distributions and patterns
+- **Custom display settings**: Pandas display options for better data visualization
+
+**Statistical Summary Metrics Used in 01_Exploratory_Data_Analysis.ipynb:**
+- **Missing Values Analysis**: `missing_values = df.isnull().sum()` and `missing_percentage = (missing_values / len(df)) * 100`
+- **Test Result Statistics**: `df['TEST_RESULT'].describe()` showing mean, median, max issues per test
+- **Pass/Fail Analysis**: `df['STATUS'].value_counts()` for pass/fail distribution
+- **Categorical Variable Distributions**: `df[col].nunique()` and `df[col].value_counts()` for unique values and top categories
+- **Temporal Analysis**: Date-based analysis of test execution patterns
+- **Data Quality Assessment**: Missing value impact classification (HIGH/MODERATE/LOW based on percentage)
+
+**Rationale:**
+- **Data Quality Understanding**: Identifies issues that need addressing before feature engineering
+- **Pattern Recognition**: Reveals temporal patterns that influence feature design
+- **Baseline Establishment**: Provides reference metrics for model evaluation
+- **Anomaly Detection**: Identifies outliers and unusual patterns requiring special handling
+- **Feature Engineering Guidance**: Informs which features might be most predictive based on data characteristics
+
+### 3. Use Irregular Time Series Dataset
 **Decision:** Use `feature_engineered_events_irregular.csv` (AI-agent-ready) instead of the standard engineered dataset.
 
 **Rationale:**

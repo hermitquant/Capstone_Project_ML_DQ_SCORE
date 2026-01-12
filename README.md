@@ -100,8 +100,10 @@ This project transforms traditional data quality testing into **predictive intel
 ## Project Structure
 ```
 Capstone_Project_ML_DQ_SCORE/
+├── dq_ml_env/                       # Python virtual environment
 ├── data/
 │   ├── pseudo_deident.csv          # Raw pseudo-anonymized dataset (16 columns)
+|
 │   ├── events.csv                  # Enhanced dataset with DQ_EVENT (23 columns)
 │   ├── feature_engineered_events.csv           # Standard engineered features (286 columns)
 │   └── feature_engineered_events_irregular.csv  # Irregular time series features (250 columns)

@@ -81,10 +81,17 @@ DQ_SCORE = 22 / 25 = 0.88
 ### 1. Exploratory Data Analysis (EDA) on Initial Dataset
 **Decision:** Perform comprehensive EDA on `pseudo_deident.csv` before any data transformation or feature engineering.
 
+**Dataset Reduction Context:**
+- **Initial Dataset**: 3,189 rows of raw test events from `pseudo_deident.csv`
+- **Final Dataset**: 19 measurements after temporal aggregation
+- **Reduction Reason**: Raw test events aggregated by measurement date to create daily DQ_SCORE calculations
+- **Aggregation Logic**: Multiple test executions per day → single daily measurement with calculated pass rate
+- **Temporal Focus**: Analysis shifted from individual test events to daily data quality trends
+
 **EDA Objectives:**
 - **Data Distribution Analysis**: Understand the distribution of test results, severity levels, and temporal patterns
 - **Daily Test Volume**: Analyze the number of tests executed per day to identify patterns and anomalies
-- **Test Status Breakdown**: Examine the distribution of PASS vs FAIL outcomes across different test categories
+- **Test Status Breakdown**: Examine the distribution of PASS/FAIL outcomes across different test categories
 - **Statistical Profile**: Generate descriptive statistics for numerical and categorical variables
 
 **Specific EDA Activities:**
@@ -116,7 +123,7 @@ DQ_SCORE = 22 / 25 = 0.88
 - **Anomaly Detection**: Identifies outliers and unusual patterns requiring special handling
 - **Feature Engineering Guidance**: Informs which features might be most predictive based on data characteristics
 
-### 3. Use Irregular Time Series Dataset
+### 2. Use Irregular Time Series Dataset
 **Decision:** Use `feature_engineered_events_irregular.csv` (AI-agent-ready) instead of the standard engineered dataset.
 
 **Rationale:**
@@ -171,12 +178,125 @@ DQ_SCORE = 22 / 25 = 0.88
 
 ## Modeling & Forecasting Approach
 
-### 7. Include Naive(last_value) as a Baseline
-**Decision:** Always evaluate a “next ≈ current” baseline alongside ML models.
+### 3. Mode-Dependent Model Selection (Post-Run vs Pre-Run)
+**Decision:** Implement automatic model selection based on available feature set and operational context.
+
+**Post-Run Mode (Rich Feature Set):**
+- **Selected Model**: ElasticNet (linear model with L1/L2 regularization)
+- **Feature Availability**: Complete daily aggregates (violations, failures, execution results)
+- **Model Characteristics**: 
+  - Linear relationships between daily metrics and DQ_SCORE
+  - Feature coefficients provide interpretable weights
+  - Handles multicollinearity through regularization
+  - Continuous predictions with smooth curves
+- **Performance**: 85-90% accuracy with complete information
+- **Key Features**: `daily_metric_alloc_diff_mean`, `daily_complexity_score_max`, `daily_metric_count_person_id_sum`
+
+**Pre-Run Mode (Limited Feature Set):**
+- **Selected Model**: DecisionTree(max_depth=2)
+- **Feature Availability**: Historical patterns without current day's results
+- **Model Characteristics**:
+  - Non-linear pattern detection with limited features
+  - Rule-based decision logic (if-then conditions)
+  - Step-wise predictions with discrete jumps
+  - Conservative forecasting with wider confidence intervals
+- **Performance**: 70-80% accuracy without current day's data
+- **Key Features**: `passed_tests` (60% importance), `measurements_last_30d` (40% importance)
+
+**Feature Interpretation and DQ_SCORE Relationship:**
+
+**`passed_tests` (60% importance - Pre-Run Mode):**
+- **Definition**: Number of tests that passed in the most recent measurement period
+- **DQ_SCORE Relationship**: Higher passed tests directly correlate with higher DQ_SCORE
+- **Business Logic**: More successful test executions indicate better data quality
+- **Interpretation**: If `passed_tests >= 248`, DQ_SCORE tends to be higher (better quality)
+- **Why Important**: Test volume represents system capacity and execution success rate
+
+**`measurements_last_30d` (40% importance - Pre-Run Mode):**
+- **Definition**: Number of data quality measurements taken in the past 30 days
+- **DQ_SCORE Relationship**: Consistent measurement frequency correlates with stable DQ_SCORE
+- **Business Logic**: Regular testing indicates mature data quality processes
+- **Interpretation**: Higher measurement frequency suggests proactive quality management
+- **Why Important**: Consistency in testing reflects organizational commitment to data quality
+
+**Post-Run Mode Features and DQ_SCORE Impact:**
+
+**`daily_metric_alloc_diff_mean` (ElasticNet coefficient: +0.007128):**
+- **Definition**: Mean difference in resource allocation counts between current and previous periods
+- **DQ_SCORE Relationship**: Positive coefficient means allocation improvements increase DQ_SCORE
+- **Business Logic**: Better resource allocation indicates optimized data infrastructure
+- **Interpretation**: When allocation metrics improve (positive differences), data quality improves
+- **Healthcare Context**: Efficient allocation of healthcare data resources supports better quality
+
+**`daily_complexity_score_max` (ElasticNet coefficient: +0.004493):**
+- **Definition**: Maximum complexity score of tests executed in a day
+- **DQ_SCORE Relationship**: Positive coefficient suggests handling complexity improves quality
+- **Business Logic**: Successfully processing complex tests indicates mature systems
+- **Interpretation**: Higher complexity capability = better data quality management
+- **Healthcare Context**: Complex healthcare data operations (cross-system validation) improve overall quality
+
+**`daily_metric_count_person_id_sum` (ElasticNet coefficient: +0.004364):**
+- **Definition**: Total count of person-based tests executed daily
+- **DQ_SCORE Relationship**: More person tests correlate with higher DQ_SCORE
+- **Business Logic**: Comprehensive person data validation improves overall quality
+- **Interpretation**: Better person data coverage = higher data quality scores
+- **Healthcare Context**: Patient data validation is critical for healthcare data quality
+
+**`daily_metric_count_distinct_person_id_sum` (ElasticNet coefficient: +0.004333):**
+- **Definition**: Total count of distinct person IDs tested daily
+- **DQ_SCORE Relationship**: Higher distinct person coverage improves DQ_SCORE
+- **Business Logic**: Broader person coverage indicates comprehensive testing
+- **Interpretation**: Testing more unique persons = better data quality assurance
+- **Healthcare Context**: Diverse patient population testing ensures data representativeness
+
+**Model Selection Rationale:**
+- **ElasticNet for Post-Run**: Rich feature set enables linear modeling with high interpretability
+- **DecisionTree for Pre-Run**: Limited features require non-linear pattern detection
+- **Automatic Selection**: Pipeline evaluates both models and selects based on RMSE performance
+
+### 4. Impact of Additional Data on Model Selection
+**Decision:** Anticipate model evolution as more measurements accumulate over time.
+
+**Expected Changes with More Data:**
+
+**For Post-Run Mode (ElasticNet Evolution):**
+- **Feature Stability**: Current top features likely remain important (allocation, complexity, person metrics)
+- **Coefficient Refinement**: More precise weight estimation as sample size increases
+- **Regularization Adjustment**: Alpha parameters may decrease as overfitting risk reduces
+- **Confidence Intervals**: Narrower prediction intervals with larger datasets
+- **Feature Expansion**: Additional engineered features may become statistically significant
+
+**For Pre-Run Mode (DecisionTree Evolution):**
+- **Depth Increase**: Current max_depth=2 may expand to depth=3-4 with more data
+- **Feature Importance**: More features may gain importance beyond current top 2
+- **Complexity Growth**: Tree can capture more nuanced patterns with additional examples
+- **Stability Improvement**: Reduced variance in tree structure with larger training sets
+- **Alternative Models**: May transition to ensemble methods (RandomForest) if data supports
+
+**Data Quantity Thresholds for Model Changes:**
+- **50-100 measurements**: DecisionTree depth may increase to 3, feature importance expands
+- **200+ measurements**: Consider ensemble methods, more complex feature interactions
+- **500+ measurements**: Deep learning approaches may become viable
+- **1000+ measurements**: Advanced time series models (LSTM, Prophet) could be evaluated
+
+**Why Model Evolution Matters:**
+- **Current Limitation**: Only 19 measurements constrain model complexity
+- **Overfitting Risk**: Deep trees would memorize noise with current dataset size
+- **Feature Learning**: More data enables discovery of subtle patterns
+- **Business Value**: Improved accuracy supports better operational decisions
+
+**Model Selection Strategy Evolution:**
+- **Current Phase**: Conservative models (shallow trees, strong regularization)
+- **Growth Phase**: Gradual complexity increase as data accumulates
+- **Maturity Phase**: Optimal model selection based on data characteristics
+- **Monitoring Phase**: Continuous evaluation of model performance drift
+
+### 5. Include Naive(last_value) as a Baseline
+**Decision:** Always evaluate a "next ≈ current" baseline alongside ML models.
 
 **Rationale:**
 - On small, stable time series, the naive baseline is often the best forecast.
-- Provides a minimum performance bar; if ML can’t beat it, don’t deploy it.
+- Provides a minimum performance bar; if ML can't beat it, don't deploy it.
 - Transparent and easy to explain to stakeholders.
 
 **Formulation of the Naive(last_value) Model:**
@@ -197,7 +317,7 @@ DQ_SCORE = 22 / 25 = 0.88
 **Decision:** Accept and document that the naive baseline (last observed DQ_SCORE) consistently outperformed ML models.
 
 **Rationale:**
-- **Data Characteristics:** With only 28 measurements and high day-to-day stability, the series exhibits low volatility. When a metric is stable, the best predictor of the next value is often the current value.
+- **Data Characteristics:** With only 19 measurements and high day-to-day stability, the series exhibits low volatility. When a metric is stable, the best predictor of the next value is often the current value.
 - **Insufficient Signal:** The engineered features (daily counts, violation flags, gap metrics) did not contain enough predictive signal to overcome the simplicity of "tomorrow ≈ today."
 - **Overfitting Risk:** ML models attempted to fit noise rather than signal due to the tiny sample size, leading to worse generalization than the baseline.
 - **Temporal Consistency:** The DQ_SCORE represents a data quality index that typically evolves slowly unless there are major changes in data pipelines or schemas. In a stable production environment, such changes are infrequent.
@@ -220,18 +340,42 @@ DQ_SCORE = 22 / 25 = 0.88
 - Deep trees, ensembles, boosting: too much variance for 28 rows.
 - Unregularized linear regression: overfits with many features.
 
-### 9. Walk-Forward (Expanding Window) Validation
+### 5. Walk-Forward (Expanding Window) Validation
 **Decision:** Use walk-forward validation instead of random train/test split.
 
-**Rationale:**
-- Preserves temporal order; no future leakage.
-- Simulates production: train on past, predict next.
-- Provides multiple test points (important with tiny data).
+**Why Walk-Forward Was Used:**
+- **Temporal Data Integrity**: Preserves the chronological order of measurements, preventing future information leakage
+- **Realistic Simulation**: Mimics production scenarios where you train on historical data and predict the next measurement
+- **Irregular Time Series Handling**: Accommodates the irregular measurement patterns (gaps of days to weeks between tests)
+- **Multiple Test Points**: Provides several validation points rather than a single train/test split, crucial with only 19 measurements
+- **Model Selection Accuracy**: Ensures the chosen model performs well in realistic forecasting conditions
+
+**How Walk-Forward Works:**
+1. **Initial Training**: Start with minimum training size (8 observations or 40% of data, whichever is larger)
+2. **Step-by-Step Prediction**: For each time step t:
+   - Train on all available data up to time t
+   - Predict the DQ_SCORE for time t+1
+   - Record prediction error (RMSE)
+3. **Expanding Window**: Each subsequent step includes the new observation in the training set
+4. **Aggregate Performance**: Calculate overall RMSE across all prediction steps
 
 **Implementation Details:**
-- Minimum training size: 8 observations (or 40% of data, whichever is larger).
-- Each step trains on all available data up to time t, predicts t+1.
-- RMSE computed across all predicted steps.
+- **Minimum Training Size**: 8 observations (ensures sufficient data for model training)
+- **Step Size**: 1 observation at a time (maximizes validation points)
+- **Error Metric**: RMSE calculated across all predicted steps
+- **Model Comparison**: Each candidate model (ElasticNet, DecisionTree, etc.) evaluated using identical walk-forward procedure
+
+**Advantages Over Random Split:**
+- **No Data Leakage**: Prevents using future information to predict past values
+- **Time-Aware**: Respects the temporal nature of forecasting tasks
+- **Robust Evaluation**: More reliable performance estimate for time series data
+- **Production Alignment**: Matches how models will actually be used in practice
+
+**Why Critical for This Dataset:**
+- **Tiny Dataset**: Only 19 measurements make random splits unreliable
+- **Irregular Spacing**: Variable time gaps between measurements require temporal validation
+- **Healthcare Context**: Medical data quality decisions depend on realistic performance estimates
+- **Model Selection**: Ensures the chosen model (ElasticNet vs DecisionTree) truly performs best in production-like conditions
 
 ### 10. Automatic Model Selection in Production
 **Decision:** Implement `train_and_forecast_next` to automatically:

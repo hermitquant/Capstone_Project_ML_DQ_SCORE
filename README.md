@@ -114,7 +114,7 @@ The raw dataset contains 16 columns of pseudo-anonymized data quality test resul
 | `IS_LATEST` | Flag for most recent test results (0/1) |
 
 ### Processed Dataset: `events.csv`
-The enhanced dataset contains 23 columns with additional engineered features including DQ_EVENT (JSON structure), TRUST_SCORE, and temporal aggregations.
+The enhanced dataset contains 23 columns with additional engineered features including DQ_EVENT (JSON structure) and temporal aggregations.
 
 ## Why Data Quality Tests Matter in Data Engineering
 
